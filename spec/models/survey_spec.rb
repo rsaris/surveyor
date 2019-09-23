@@ -7,33 +7,33 @@ describe Survey do
   context "when creating" do
     it "is invalid without #title" do
       survey.title = nil
-      survey.should have(1).error_on :title
+      expect(survey).to have(1).error_on :title
     end
     it "adjust #survey_version" do
       original = Survey.new(:title => "Foo")
-      original.save.should be_true
-      original.survey_version.should == 1
+      expect(original.save).to be(true)
+      expect(original.survey_version).to eq(1)
       imposter = Survey.new(:title => "Foo")
-      imposter.save.should be_true
-      imposter.title.should == "Foo"
-      imposter.survey_version.should == 2
+      expect(imposter.save).to be(true)
+      expect(imposter.title).to eq("Foo")
+      expect(imposter.survey_version).to eq(2)
       bandwagoneer = Survey.new(:title => "Foo")
-      bandwagoneer.save.should be_true
-      bandwagoneer.title.should == "Foo"
-      bandwagoneer.survey_version.should == 3
+      expect(bandwagoneer.save).to be(true)
+      expect(bandwagoneer.title).to eq("Foo")
+      expect(bandwagoneer.survey_version).to eq(3)
     end
     it "update #survey_version on save" do
       original = Survey.new(:title => "Foo")
-      original.save.should be_true
+      original.save.should be(true)
       imposter = Survey.new(:title => "Foo")
-      imposter.save.should be_true
+      imposter.save.should be(true)
       imposter.survey_version = 0
-      imposter.save.should be_true
+      imposter.save.should be(true)
       imposter.survey_version.should_not eql original.survey_version
     end
     it "doesn't adjust #title when" do
       original = FactoryBot.create(:survey, :title => "Foo")
-      original.save.should be_true
+      original.save.should be(true)
       original.update_attributes(:title => "Foo")
       original.title.should == "Foo"
     end
@@ -51,31 +51,31 @@ describe Survey do
     it "#active_at on a certain date/time" do
       survey.inactive_at = 2.days.from_now
       survey.active_at = 2.days.ago
-      survey.active?.should be_true
+      survey.active?.should be(true)
     end
     it "#inactive_at on a certain date/time" do
       survey.active_at = 3.days.ago
       survey.inactive_at = 1.days.ago
-      survey.active?.should be_false
+      survey.active?.should be(false)
     end
     it "#activate! and #deactivate!" do
       survey.activate!
-      survey.active?.should be_true
+      survey.active?.should be(true)
       survey.deactivate!
-      survey.active?.should be_false
+      survey.active?.should be(false)
     end
     it "nils out past values of #inactive_at on #activate!" do
       survey.inactive_at = 5.days.ago
-      survey.active?.should be_false
+      survey.active?.should be(false)
       survey.activate!
-      survey.active?.should be_true
+      survey.active?.should be(true)
       survey.inactive_at.should be_nil
     end
     it "nils out pas values of #active_at on #deactivate!" do
       survey.active_at = 5.days.ago
-      survey.active?.should be_true
+      survey.active?.should be(true)
       survey.deactivate!
-      survey.active?.should be_false
+      survey.active?.should be(false)
       survey.active_at.should be_nil
     end
   end

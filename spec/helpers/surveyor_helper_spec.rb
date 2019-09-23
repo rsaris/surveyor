@@ -1,17 +1,17 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe SurveyorHelper do
+describe SurveyorHelper, type: :helper do
   context "numbering" do
     it "should return the question text with number, except for labels, dependencies, images, and grouped questions" do
       q1 = FactoryBot.create(:question)
       q2 = FactoryBot.create(:question, :display_type => "label")
       q3 = FactoryBot.create(:question, :dependency => FactoryBot.create(:dependency))
-      q4 = FactoryBot.create(:question, :display_type => "image", :text => "something.jpg")
+      q4 = FactoryBot.create(:question, :display_type => "image", :text => "rails.png")
       q5 = FactoryBot.create(:question, :question_group => FactoryBot.create(:question_group))
       helper.q_text(q1).should == "<span class='qnum'>1) </span>#{q1.text}"
       helper.q_text(q2).should == q2.text
       helper.q_text(q3).should == q3.text
-      helper.q_text(q4).should =~ /<img src="\/(images|assets)\/something\.jpg" alt="Something" \/>/
+      helper.q_text(q4).should =~ /<img src="\/(images|assets)\/rails-(.)+\.png" alt="Rails" \/>/
       helper.q_text(q5).should == q5.text
     end
   end

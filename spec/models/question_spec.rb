@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Question do
+describe Question, type: :model do
   let(:question){ FactoryBot.create(:question) }
 
   context "when creating" do
@@ -10,7 +10,7 @@ describe Question do
       question.should have(1).error_on :text
     end
     it "#is_mandantory == false by default" do
-      question.mandatory?.should be_false
+      question.mandatory?.should be(false)
     end
     it "converts #pick to string" do
       question.pick.should == "none"
@@ -28,12 +28,12 @@ describe Question do
     end
     it "#part_of_group? and #solo? are aware of question groups" do
       question.question_group = FactoryBot.create(:question_group)
-      question.solo?.should be_false
-      question.part_of_group?.should be_true
+      question.solo?.should be(false)
+      question.part_of_group?.should be(true)
 
       question.question_group = nil
-      question.solo?.should be_true
-      question.part_of_group?.should be_false
+      question.solo?.should be(true)
+      question.part_of_group?.should be(false)
     end
   end
 
@@ -64,7 +64,7 @@ describe Question do
       dependency.stub(:is_met?).with(response_set).and_return true
     end
     it "checks its dependency" do
-      question.triggered?(response_set).should be_true
+      question.triggered?(response_set).should be(true)
     end
     it "deletes its dependency when deleted" do
       d_id = question.dependency.id
@@ -148,7 +148,7 @@ describe Question do
     it "#text_for with #display_type == image" do
       question.text = "rails.png"
       question.display_type = :image
-      question.text_for.should =~ /<img src="\/(images|assets)\/rails\.png" alt="Rails" \/>/
+      question.text_for.should =~ /<img src="\/(images|assets)\/rails-(.)+\.png" alt="Rails" \/>/
     end
     it "#help_text_for"
     it "#text_for preserves strings" do

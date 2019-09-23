@@ -16,6 +16,7 @@ require 'factories'
 require 'json_spec'
 require 'database_cleaner'
 require 'rails-controller-testing'
+require 'rspec/collection_matchers'
 require 'rspec/retry'
 
 # Requires supporting ruby files with custom matchers and macros, etc,

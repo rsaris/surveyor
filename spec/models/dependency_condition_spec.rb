@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 
-describe DependencyCondition do
+describe DependencyCondition, type: :model do
   it "should have a list of operators" do
     %w(== != < > <= >=).each do |operator|
-      DependencyCondition.operators.include?(operator).should be_true
+      DependencyCondition.operators.include?(operator).should be(true)
     end
   end
 

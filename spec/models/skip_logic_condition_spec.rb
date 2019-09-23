@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 
-describe SkipLogicCondition do
+describe SkipLogicCondition, type: :model do
   it "should have a list of operators" do
     %w(== != < > <= >=).each do |operator|
-      SkipLogicCondition.operators.include?(operator).should be_true
+      SkipLogicCondition.operators.include?(operator).should be(true)
     end
   end
 

@@ -43,6 +43,7 @@ namespace :testbed do
       Bundler.with_clean_env do
         sh 'bundle exec rails generate surveyor:install'
         sh 'bundle exec rake db:migrate db:test:prepare'
+        sh 'cp ../rails.png app/assets/images/rails.png'
       end
     end
   end

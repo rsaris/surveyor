@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Dependency do
+describe Dependency, type: :model do
   before(:each) do
     @dependency = FactoryBot.create(:dependency)
   end
@@ -45,7 +45,7 @@ describe Dependency do
   end
 end
 
-describe Dependency, "when evaluating dependency conditions of a question in a response set" do
+describe Dependency, "when evaluating dependency conditions of a question in a response set", type: :model do
 
   before(:each) do
     @dep = Dependency.new(:rule => "A", :question_id => 1)
@@ -53,9 +53,9 @@ describe Dependency, "when evaluating dependency conditions of a question in a r
     @dep3 = Dependency.new(:rule => "A or B", :question_id => 1)
     @dep4 = Dependency.new(:rule => "!(A and B) and C", :question_id => 1)
 
-    @dep_c = mock_model(DependencyCondition, :id => 1, :rule_key => "A", :to_hash => {:A => true})
-    @dep_c2 = mock_model(DependencyCondition, :id => 2, :rule_key => "B", :to_hash => {:B => false})
-    @dep_c3 = mock_model(DependencyCondition, :id => 3, :rule_key => "C", :to_hash => {:C => true})
+    @dep_c = instance_double(DependencyCondition, :id => 1, :rule_key => "A", :to_hash => {:A => true})
+    @dep_c2 = instance_double(DependencyCondition, :id => 2, :rule_key => "B", :to_hash => {:B => false})
+    @dep_c3 = instance_double(DependencyCondition, :id => 3, :rule_key => "C", :to_hash => {:C => true})
 
     @dep.stub(:dependency_conditions).and_return([@dep_c])
     @dep2.stub(:dependency_conditions).and_return([@dep_c, @dep_c2])
@@ -64,10 +64,10 @@ describe Dependency, "when evaluating dependency conditions of a question in a r
   end
 
   it "knows if the dependencies are met" do
-    @dep.is_met?(@response_set).should be_true
-    @dep2.is_met?(@response_set).should be_false
-    @dep3.is_met?(@response_set).should be_true
-    @dep4.is_met?(@response_set).should be_true
+    @dep.is_met?(@response_set).should be(true)
+    @dep2.is_met?(@response_set).should be(false)
+    @dep3.is_met?(@response_set).should be(true)
+    @dep4.is_met?(@response_set).should be(true)
   end
 
   it "returns the proper keyed pairs from the dependency conditions" do
@@ -77,7 +77,7 @@ describe Dependency, "when evaluating dependency conditions of a question in a r
     @dep4.conditions_hash(@response_set).should == {:A => true, :B => false, :C => true}
   end
 end
-describe Dependency, "with conditions" do
+describe Dependency, "with conditions", type: :model do
   it "should destroy conditions when destroyed" do
     @dependency = Dependency.new(:rule => "A and B and C", :question_id => 1)
     FactoryBot.create(:dependency_condition, :dependency => @dependency, :rule_key => "A")

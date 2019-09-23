@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Response, "when saving a response" do
+describe Response, "when saving a response", type: :model do
   before(:each) do
     # @response = Response.new(:question_id => 314, :response_set_id => 159, :answer_id => 1)
     @response = FactoryBot.create(:response, :question => FactoryBot.create(:question), :answer => FactoryBot.create(:answer, :response_class => :string))
@@ -17,21 +17,21 @@ describe Response, "when saving a response" do
 
   it "should be correct if the question has no correct_answer_id" do
     @response.question.correct_answer_id.should be_nil
-    @response.correct?.should be_true
+    @response.correct?.should be(true)
   end
 
   it "should be correct if the answer's response class != answer" do
     @response.answer.response_class.should_not == "answer"
-    @response.correct?.should be_true
+    @response.correct?.should be(true)
   end
 
   it "should be (in)correct if answer_id is (not) equal to question's correct_answer_id" do
     @answer = FactoryBot.create(:answer, :response_class => "answer")
     @question = FactoryBot.create(:question, :correct_answer => @answer)
     @response = FactoryBot.create(:response, :question => @question, :answer => @answer)
-    @response.correct?.should be_true
+    @response.correct?.should be(true)
     @response.answer = FactoryBot.create(:answer, :response_class => "answer").tap { |a| a.id = 143 }
-    @response.correct?.should be_false
+    @response.correct?.should be(false)
   end
 
   it "should be in order by created_at" do
@@ -78,7 +78,7 @@ describe Response, "when saving a response" do
   end
 end
 
-describe Response, "applicable_attributes" do
+describe Response, "applicable_attributes", type: :model do
   before(:each) do
     @who = FactoryBot.create(:question, :text => "Who rules?")
     @odoyle = FactoryBot.create(:answer, :text => "Odoyle", :response_class => "answer")
@@ -115,7 +115,7 @@ describe Response, "applicable_attributes" do
   end
 end
 
-describe Response, '#to_formatted_s' do
+describe Response, '#to_formatted_s', type: :model do
   context "when datetime" do
     let(:r) { Response.new(:answer => Answer.new(:response_class => 'datetime')) }
 
@@ -127,7 +127,7 @@ describe Response, '#to_formatted_s' do
   end
 end
 
-describe Response, '#json_value' do
+describe Response, '#json_value', type: :model do
   context "when integer" do
     let(:r) {Response.new(:integer_value => 2, :answer => Answer.new(:response_class => 'integer'))}
     it "should be 2" do
@@ -174,7 +174,7 @@ describe Response, '#json_value' do
   end
 end
 
-describe Response, 'value methods' do
+describe Response, 'value methods', type: :model do
   let(:response) { Response.new }
 
   describe '#date_value=' do

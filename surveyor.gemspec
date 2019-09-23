@@ -37,5 +37,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency('factory_bot', '~> 4.8')
   s.add_development_dependency('database_cleaner', '~> 1.7')
   s.add_development_dependency('rspec-retry', '~> 0.6')
+  s.add_development_dependency('rspec-collection_matchers')
   s.add_development_dependency('rails-controller-testing')
 end

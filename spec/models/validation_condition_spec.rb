@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe ValidationCondition do
+describe ValidationCondition, type: :model do
   before(:each) do
     @validation_condition = FactoryBot.create(:validation_condition)
   end
@@ -45,7 +45,7 @@ describe ValidationCondition do
   end
 end
 
-describe ValidationCondition, "validating responses" do
+describe ValidationCondition, "validating responses", type: :model do
   def test_var(vhash, ahash, rhash)
     v = FactoryBot.create(:validation_condition, vhash)
     a = FactoryBot.create(:answer, ahash)
@@ -54,16 +54,16 @@ describe ValidationCondition, "validating responses" do
   end
 
   it "should validate a response by regexp" do
-    test_var({:operator => "=~", :regexp => /^[a-z]{1,6}$/.to_s}, {:response_class => "string"}, {:string_value => "clear"}).should be_true
-    test_var({:operator => "=~", :regexp => /^[a-z]{1,6}$/.to_s}, {:response_class => "string"}, {:string_value => "foobarbaz"}).should be_false
+    test_var({:operator => "=~", :regexp => /^[a-z]{1,6}$/.to_s}, {:response_class => "string"}, {:string_value => "clear"}).should be(true)
+    test_var({:operator => "=~", :regexp => /^[a-z]{1,6}$/.to_s}, {:response_class => "string"}, {:string_value => "foobarbaz"}).should be(false)
   end
   it "should validate a response by integer comparison" do
-    test_var({:operator => ">", :integer_value => 3}, {:response_class => "integer"}, {:integer_value => 4}).should be_true
-    test_var({:operator => "<=", :integer_value => 256}, {:response_class => "integer"}, {:integer_value => 512}).should be_false
+    test_var({:operator => ">", :integer_value => 3}, {:response_class => "integer"}, {:integer_value => 4}).should be(true)
+    test_var({:operator => "<=", :integer_value => 256}, {:response_class => "integer"}, {:integer_value => 512}).should be(false)
   end
   it "should validate a response by (in)equality" do
-    test_var({:operator => "!=", :datetime_value => Date.today + 1}, {:response_class => "date"}, {:datetime_value => Date.today}).should be_true
-    test_var({:operator => "==", :string_value => "foo"}, {:response_class => "string"}, {:string_value => "foo"}).should be_true
+    test_var({:operator => "!=", :datetime_value => Date.today + 1}, {:response_class => "date"}, {:datetime_value => Date.today}).should be(true)
+    test_var({:operator => "==", :string_value => "foo"}, {:response_class => "string"}, {:string_value => "foo"}).should be(true)
   end
   it "should represent itself as a hash" do
     @v = FactoryBot.create(:validation_condition, :rule_key => "A")
@@ -74,7 +74,7 @@ describe ValidationCondition, "validating responses" do
   end
 end
 
-describe ValidationCondition, "validating responses by other responses" do
+describe ValidationCondition, "validating responses by other responses", type: :model do
   def test_var(v_hash, a_hash, r_hash, ca_hash, cr_hash)
     ca = FactoryBot.create(:answer, ca_hash)
     cr = FactoryBot.create(:response, cr_hash.merge(:answer => ca, :question => ca.question))
@@ -84,15 +84,15 @@ describe ValidationCondition, "validating responses by other responses" do
     return v.is_valid?(r)
   end
   it "should validate a response by integer comparison" do
-    test_var({:operator => ">"}, {:response_class => "integer"}, {:integer_value => 4}, {:response_class => "integer"}, {:integer_value => 3}).should be_true
-    test_var({:operator => "<="}, {:response_class => "integer"}, {:integer_value => 512}, {:response_class => "integer"}, {:integer_value => 4}).should be_false
+    test_var({:operator => ">"}, {:response_class => "integer"}, {:integer_value => 4}, {:response_class => "integer"}, {:integer_value => 3}).should be(true)
+    test_var({:operator => "<="}, {:response_class => "integer"}, {:integer_value => 512}, {:response_class => "integer"}, {:integer_value => 4}).should be(false)
   end
   it "should validate a response by (in)equality" do
-    test_var({:operator => "!="}, {:response_class => "date"}, {:datetime_value => Date.today}, {:response_class => "date"}, {:datetime_value => Date.today + 1}).should be_true
-    test_var({:operator => "=="}, {:response_class => "string"}, {:string_value => "donuts"}, {:response_class => "string"}, {:string_value => "donuts"}).should be_true
+    test_var({:operator => "!="}, {:response_class => "date"}, {:datetime_value => Date.today}, {:response_class => "date"}, {:datetime_value => Date.today + 1}).should be(true)
+    test_var({:operator => "=="}, {:response_class => "string"}, {:string_value => "donuts"}, {:response_class => "string"}, {:string_value => "donuts"}).should be(true)
   end
   it "should not validate a response by regexp" do
-    test_var({:operator => "=~"}, {:response_class => "date"}, {:datetime_value => Date.today}, {:response_class => "date"}, {:datetime_value => Date.today + 1}).should be_false
-    test_var({:operator => "=~"}, {:response_class => "string"}, {:string_value => "donuts"}, {:response_class => "string"}, {:string_value => "donuts"}).should be_false
+    test_var({:operator => "=~"}, {:response_class => "date"}, {:datetime_value => Date.today}, {:response_class => "date"}, {:datetime_value => Date.today + 1}).should be(false)
+    test_var({:operator => "=~"}, {:response_class => "string"}, {:string_value => "donuts"}, {:response_class => "string"}, {:string_value => "donuts"}).should be(false)
   end
 end

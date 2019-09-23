@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Validation do
+describe Validation, type: :model do
   before(:each) do
     @validation = FactoryBot.create(:validation)
   end
@@ -31,7 +31,7 @@ describe Validation do
     @validation.should have(1).error_on(:rule)
   end
 end
-describe Validation, "reporting its status" do
+describe Validation, "reporting its status", type: :model do
   def test_var(vhash, vchashes, ahash, rhash)
     a = FactoryBot.create(:answer, ahash)
     v = FactoryBot.create(:validation, {:answer => a, :rule => "A"}.merge(vhash))
@@ -45,13 +45,13 @@ describe Validation, "reporting its status" do
   end
 
   it "should validate a response by integer comparison" do
-    test_var({:rule => "A and B"}, [{:operator => ">=", :integer_value => 0}, {:rule_key => "B", :operator => "<=", :integer_value => 120}], {:response_class => "integer"}, {:integer_value => 48}).should be_true
+    test_var({:rule => "A and B"}, [{:operator => ">=", :integer_value => 0}, {:rule_key => "B", :operator => "<=", :integer_value => 120}], {:response_class => "integer"}, {:integer_value => 48}).should be(true)
   end
   it "should validate a response by regexp" do
-    test_var({}, [{:operator => "=~", :regexp => '/^[a-z]{1,6}$/'}], {:response_class => "string"}, {:string_value => ""}).should be_false
+    test_var({}, [{:operator => "=~", :regexp => '/^[a-z]{1,6}$/'}], {:response_class => "string"}, {:string_value => ""}).should be(false)
   end
 end
-describe Validation, "with conditions" do
+describe Validation, "with conditions", type: :model do
   it "should destroy conditions when destroyed" do
     @validation = FactoryBot.create(:validation)
     FactoryBot.create(:validation_condition, :validation => @validation, :rule_key => "A")

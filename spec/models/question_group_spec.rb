@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe QuestionGroup do
+describe QuestionGroup, type: :model do
   let(:question_group){ FactoryBot.create(:question_group) }
   let(:dependency){ FactoryBot.create(:dependency) }
   let(:response_set){ FactoryBot.create(:response_set) }
