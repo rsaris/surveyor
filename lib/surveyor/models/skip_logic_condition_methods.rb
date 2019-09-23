@@ -8,10 +8,10 @@ module Surveyor
 
       included do
         # Associations
-        belongs_to :answer
-        belongs_to :skip_logic, :inverse_of => :skip_logic_conditions
-        belongs_to :dependent_question, :foreign_key => :question_id, :class_name => :question
-        belongs_to :question
+        belongs_to :answer, optional: true
+        belongs_to :skip_logic, :inverse_of => :skip_logic_conditions, optional: true
+        belongs_to :dependent_question, :foreign_key => :question_id, :class_name => :question, optional: true
+        belongs_to :question, optional: true
         attr_accessible *PermittedParams.new.skip_logic_condition_attributes if defined? ActiveModel::MassAssignmentSecurity
 
         # Validations

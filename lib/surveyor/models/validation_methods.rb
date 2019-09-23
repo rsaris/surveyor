@@ -7,7 +7,7 @@ module Surveyor
 
       included do
         # Associations
-        belongs_to :answer
+        belongs_to :answer, optional: true
         has_many :validation_conditions, :dependent => :destroy
         attr_accessible *PermittedParams.new.validation_attributes if defined? ActiveModel::MassAssignmentSecurity
 

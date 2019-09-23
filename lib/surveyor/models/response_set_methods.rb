@@ -7,9 +7,9 @@ module Surveyor
 
       included do
         # Associations
-        belongs_to :survey
-        belongs_to :user
-        belongs_to :current_section, :foreign_key => :current_section_id, :class_name => :survey_section
+        belongs_to :survey, optional: true
+        belongs_to :user, optional: true
+        belongs_to :current_section, :foreign_key => :current_section_id, :class_name => :survey_section, optional: true
         has_many :responses, :dependent => :destroy
         accepts_nested_attributes_for :responses, :allow_destroy => true
         attr_accessible *PermittedParams.new.response_set_attributes if defined? ActiveModel::MassAssignmentSecurity

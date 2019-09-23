@@ -1,5 +1,5 @@
 # encoding: UTF-8
-class IncrementSurveyVersionsByOne < ActiveRecord::Migration
+class IncrementSurveyVersionsByOne < ActiveRecord::Migration[4.2]
   def self.up
     remove_index(:surveys, name: 'surveys_access_code_version_idx')
 

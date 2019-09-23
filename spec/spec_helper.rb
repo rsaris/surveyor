@@ -15,6 +15,7 @@ require 'capybara/poltergeist'
 require 'factories'
 require 'json_spec'
 require 'database_cleaner'
+require 'rails-controller-testing'
 require 'rspec/retry'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -29,12 +30,11 @@ Capybara.javascript_driver = :poltergeist
 
 
 RSpec.configure do |config|
+  config.include Capybara::DSL
   config.include JsonSpec::Helpers
   config.include SurveyorAPIHelpers
   config.include SurveyorUIHelpers
   config.include WaitForAjax
-
-  config.treat_symbols_as_metadata_keys_with_true_values = true
 
   # == Mock Framework
   #
@@ -82,11 +82,7 @@ RSpec.configure do |config|
   end
 
   config.before do
-    if example.metadata[:clean_with_truncation] || example.metadata[:js]
-      DatabaseCleaner.strategy = :truncation
-    else
-      DatabaseCleaner.strategy = :transaction
-    end
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
   end
 

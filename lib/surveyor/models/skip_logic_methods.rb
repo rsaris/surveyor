@@ -9,8 +9,8 @@ module Surveyor
 
       included do
         # Associations
-        belongs_to :survey_section, inverse_of: :skip_logics
-        belongs_to :target_survey_section, :foreign_key => :target_survey_section_id, :class_name => "SurveySection"
+        belongs_to :survey_section, inverse_of: :skip_logics, optional: true
+        belongs_to :target_survey_section, :foreign_key => :target_survey_section_id, :class_name => "SurveySection", optional: true
         has_many :skip_logic_conditions, inverse_of: :skip_logic, dependent: :destroy
         attr_accessible *PermittedParams.new.skip_logic_attributes if defined? ActiveModel::MassAssignmentSecurity
 

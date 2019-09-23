@@ -17,24 +17,25 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency('rails', '>= 4.2')
-  s.add_dependency('haml', '~> 4.0')
-  s.add_dependency('jquery-rails', '~> 4.3.1')
-  s.add_dependency('sass-rails', '~> 5.0.0')
+  s.add_dependency('rails', '~> 5.1')
+  s.add_dependency('haml', '~> 5.0') # Required >= 5 to deal with Erubi retirement
+  s.add_dependency('jquery-rails', '~> 4.3')
+  s.add_dependency('sass-rails', '~> 5.0') # Note that > 5.1 requires Rails 5.2
   s.add_dependency('uuidtools', '~> 2.1')
-  s.add_dependency('mustache', '~> 0.99')
-  s.add_dependency('rabl', '~> 0.6')
+  s.add_dependency('mustache', '~> 1.1')
+  s.add_dependency('rabl', '~> 0.14')
 
   s.add_development_dependency('yard')
   s.add_development_dependency('rake', '~> 11.0')
   s.add_development_dependency('sqlite3')
-  s.add_development_dependency('bundler', '~> 1.14.0')
-  s.add_development_dependency('rspec-rails', '~> 2.14.2')
-  s.add_development_dependency('capybara', '~> 2.2.1')
-  s.add_development_dependency('launchy', '~> 2.4.2')
-  s.add_development_dependency('poltergeist', '~>1.17.0')
-  s.add_development_dependency('json_spec', '~> 1.1.1')
-  s.add_development_dependency('factory_bot', '~> 4.8.0')
-  s.add_development_dependency('database_cleaner', '~> 1.2.0')
-  s.add_development_dependency('rspec-retry', '0.4.0')
+  s.add_development_dependency('bundler', '~> 2.0')
+  s.add_development_dependency('rspec-rails', '~> 3.7')
+  s.add_development_dependency('capybara', '~> 2.17')
+  s.add_development_dependency('launchy', '~> 2.4')
+  s.add_development_dependency('poltergeist', '~> 1.18')
+  s.add_development_dependency('json_spec', '~> 1.1')
+  s.add_development_dependency('factory_bot', '~> 4.8')
+  s.add_development_dependency('database_cleaner', '~> 1.7')
+  s.add_development_dependency('rspec-retry', '~> 0.6')
+  s.add_development_dependency('rails-controller-testing')
 end
