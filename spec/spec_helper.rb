@@ -86,7 +86,13 @@ RSpec.configure do |config|
   end
 
   config.before do
-    DatabaseCleaner.strategy = :transaction
+    # https://github.com/yujinakayama/transpec#current-example-object
+    if RSpec.current_example.metadata[:clean_with_truncation] || RSpec.current_example.metadata[:js]
+      DatabaseCleaner.strategy = :truncation
+    else
+      DatabaseCleaner.strategy = :transaction
+    end
+
     DatabaseCleaner.start
   end
 
