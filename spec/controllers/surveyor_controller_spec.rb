@@ -36,7 +36,7 @@ describe SurveyorController, type: :controller do
 
   context "#create" do
     def do_post(params = {})
-      post :create, {:survey_code => "alpha"}.merge(params)
+      post :create, params: {:survey_code => "alpha"}.merge(params)
     end
     it "finds latest version" do
       do_post
@@ -74,7 +74,7 @@ describe SurveyorController, type: :controller do
         session[:surveyor_javascript].should == "enabled"
       end
       it "disabled" do
-        post :create, :survey_code => "xyz", :surveyor_javascript_enabled => "not_true"
+        post :create, params: {:survey_code => "xyz", :surveyor_javascript_enabled => "not_true"}
         session[:surveyor_javascript].should_not be_nil
         session[:surveyor_javascript].should == "not_enabled"
       end
@@ -83,7 +83,7 @@ describe SurveyorController, type: :controller do
 
   context "#show" do
     def do_get(params = {})
-      get :show, {:survey_code => "alpha", :response_set_code => "pdq"}.merge(params)
+      get :show, params: {:survey_code => "alpha", :response_set_code => "pdq"}.merge(params)
     end
     it "renders show" do
       do_get
@@ -117,7 +117,7 @@ describe SurveyorController, type: :controller do
   context "#edit" do
     def do_get(params = {})
       survey.sections = [FactoryBot.create(:survey_section, :survey => survey)]
-      get :edit, {:survey_code => "alpha", :response_set_code => "pdq"}.merge(params)
+      get :edit, params: {:survey_code => "alpha", :response_set_code => "pdq"}.merge(params)
     end
     it "renders edit" do
       do_get
@@ -203,7 +203,7 @@ describe SurveyorController, type: :controller do
 
     context "with form submission" do
       def do_put(extra_params = {})
-        put :update, update_params.merge(extra_params)
+        put :update, params: update_params.merge(extra_params)
       end
 
       it_behaves_like "#update action"
@@ -228,7 +228,7 @@ describe SurveyorController, type: :controller do
 
     context 'with ajax' do
       def do_put(extra_params = {})
-        xhr :put, :update, update_params.merge(extra_params)
+        put :update, params: update_params.merge(extra_params)
       end
 
       it_behaves_like "#update action"
@@ -250,7 +250,7 @@ describe SurveyorController, type: :controller do
     render_views
 
     let(:json) {
-      get :export, :survey_code => survey.access_code, :format => 'json'
+      get :export, :format => 'json', params: {:survey_code => survey.access_code}
       JSON.parse(response.body)
     }
 
