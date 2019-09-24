@@ -15,7 +15,10 @@ require 'capybara/poltergeist'
 require 'factories'
 require 'json_spec'
 require 'database_cleaner'
+
+# This doesn't seem to be getting wired up?
 require 'rails-controller-testing'
+
 require 'rspec/collection_matchers'
 require 'rspec/retry'
 
