@@ -15,7 +15,7 @@ describe Surveyor::Unparser do
     a15 = q1.answers.build(:text => "Omit", :reference_identifier => 5, :question => q1, :is_exclusive => true)
     q2 = @section.questions.build(:text => "What is your name?", :reference_identifier => 2, :pick => :none)
     a21 = q2.answers.build(:response_class => "string", :reference_identifier => 1, :question => q2)
-    Surveyor::Unparser.unparse(@survey).should ==
+    expect(Surveyor::Unparser.unparse(@survey)).to eq
 <<-dsl
 survey "Simple survey", :description=>"very simple" do
   section "Simple section" do
@@ -55,7 +55,7 @@ dsl
     g2 = q5.build_question_group(:text => "Tell us about the cars you own", :display_type => "repeater")
     g2.questions = [q5]
     
-    Surveyor::Unparser.unparse(@survey).should ==
+    expect(Surveyor::Unparser.unparse(@survey)).to eq
 <<-dsl
 survey "Simple survey", :description=>"very simple" do
   section "Simple section" do
@@ -96,7 +96,7 @@ dsl
     q10 = @section.questions.build(:text => "What time do you usually take a lunch break?", :reference_identifier => "time_lunch")
     a101 = q10.answers.build(:response_class => "time", :reference_identifier => 1, :question => q10)
 
-    Surveyor::Unparser.unparse(@survey).should ==
+    expect(Surveyor::Unparser.unparse(@survey)).to eq
 <<-dsl
 survey "Simple survey", :description=>"very simple" do
   section "Simple section" do

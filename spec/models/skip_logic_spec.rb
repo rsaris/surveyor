@@ -5,31 +5,31 @@ describe SkipLogic, type: :model do
   let!( :skip_logic ) { FactoryBot.create(:skip_logic) }
 
   it "should be valid" do
-    skip_logic.should be_valid
+    expect(skip_logic).to be_valid
   end
 
   it "should be invalid without a rule" do
     skip_logic.rule = nil
-    skip_logic.should have(2).errors_on(:rule)
+    expect(skip_logic).to have(2).errors_on(:rule)
     skip_logic.rule = " "
-    skip_logic.should have(1).errors_on(:rule)
+    expect(skip_logic).to have(1).errors_on(:rule)
   end
 
   it "should be invalid without a survey_section" do
     skip_logic.survey_section_id = nil
-    skip_logic.should have(1).error_on(:survey_section)
+    expect(skip_logic).to have(1).error_on(:survey_section)
 
     skip_logic.survey_section_id = 1
-    skip_logic.should be_valid
+    expect(skip_logic).to be_valid
   end
 
   it "should be invalid unless rule composed of only references and operators" do
     skip_logic.rule = "foo"
-    skip_logic.should have(1).error_on(:rule)
+    expect(skip_logic).to have(1).error_on(:rule)
     skip_logic.rule = "1 to 2"
-    skip_logic.should have(1).error_on(:rule)
+    expect(skip_logic).to have(1).error_on(:rule)
     skip_logic.rule = "a and b"
-    skip_logic.should have(1).error_on(:rule)
+    expect(skip_logic).to have(1).error_on(:rule)
   end
 end
 
@@ -44,24 +44,24 @@ describe SkipLogic, "when evaluating skip logic conditions of a section in a res
   let!( :sl_c_c ) { instance_double(SkipLogicCondition, :id => 3, :rule_key => "C", :to_hash => {:C => true}) }
 
   before( :each ) do
-    sl.stub(:skip_logic_conditions).and_return([sl_c_a])
-    sl2.stub(:skip_logic_conditions).and_return([sl_c_a, sl_c_b])
-    sl3.stub(:skip_logic_conditions).and_return([sl_c_a, sl_c_b])
-    sl4.stub(:skip_logic_conditions).and_return([sl_c_a, sl_c_b, sl_c_c])
+    allow(sl).to receive(:skip_logic_conditions).and_return([sl_c_a])
+    allow(sl2).to receive(:skip_logic_conditions).and_return([sl_c_a, sl_c_b])
+    allow(sl3).to receive(:skip_logic_conditions).and_return([sl_c_a, sl_c_b])
+    allow(sl4).to receive(:skip_logic_conditions).and_return([sl_c_a, sl_c_b, sl_c_c])
   end
 
   it "knows if the skip logics are met" do
-    sl.is_met?(@response_set).should be(true)
-    sl2.is_met?(@response_set).should be(false)
-    sl3.is_met?(@response_set).should be(true)
-    sl4.is_met?(@response_set).should be(true)
+    expect(sl.is_met?(@response_set)).to be(true)
+    expect(sl2.is_met?(@response_set)).to be(false)
+    expect(sl3.is_met?(@response_set)).to be(true)
+    expect(sl4.is_met?(@response_set)).to be(true)
   end
 
   it "returns the proper keyed pairs from the dependency conditions" do
-    sl.conditions_hash(@response_set).should == {:A => true}
-    sl2.conditions_hash(@response_set).should == {:A => true, :B => false}
-    sl3.conditions_hash(@response_set).should == {:A => true, :B => false}
-    sl4.conditions_hash(@response_set).should == {:A => true, :B => false, :C => true}
+    expect(sl.conditions_hash(@response_set)).to eq({:A => true})
+    expect(sl2.conditions_hash(@response_set)).to eq({:A => true, :B => false})
+    expect(sl3.conditions_hash(@response_set)).to eq({:A => true, :B => false})
+    expect(sl4.conditions_hash(@response_set)).to eq({:A => true, :B => false, :C => true})
   end
 end
 
@@ -73,6 +73,6 @@ describe SkipLogic, "with conditions", type: :model do
     FactoryBot.create(:skip_logic_condition, :skip_logic => skip_logic, :rule_key => "C")
     slc_ids = skip_logic.skip_logic_conditions.map(&:id)
     skip_logic.destroy
-    slc_ids.each{|id| SkipLogicCondition.find_by_id(id).should be nil}
+    slc_ids.each{|id| expect(SkipLogicCondition.find_by_id(id)).to be nil}
   end
 end

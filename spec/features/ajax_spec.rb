@@ -186,18 +186,18 @@ describe "saving with ajax", js: true do
     click_button "Special"
 
     check "No other heating source"
-    expect(checkbox("heat2", "neg_1").disabled?).to be_true
-    expect(checkbox("heat2", "neg_2").disabled?).to be_true
+    expect(checkbox("heat2", "neg_1").disabled?).to be_truthy
+    expect(checkbox("heat2", "neg_2").disabled?).to be_truthy
 
     uncheck "No other heating source"
-    expect(checkbox("heat2", "neg_1").disabled?).to be_false
+    expect(checkbox("heat2", "neg_1").disabled?).to be_falsey
 
     check "Electric"
-    expect(checkbox("heat2", "neg_1").disabled?).to be_false
+    expect(checkbox("heat2", "neg_1").disabled?).to be_falsey
 
     check "Refused"
-    expect(checkbox("heat2", "1").disabled?).to be_true
-    expect(checkbox("heat2", "neg_2").disabled?).to be_true
+    expect(checkbox("heat2", "1").disabled?).to be_truthy
+    expect(checkbox("heat2", "neg_2").disabled?).to be_truthy
   end
 end
 
