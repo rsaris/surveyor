@@ -551,24 +551,3 @@ describe ResponseSet, "exporting csv", type: :model do
     expect(csv).to match /pecan pie/
   end
 end
-
-describe ResponseSet, "#as_json", type: :model do
-  let(:rs) {
-    FactoryBot.create(:response_set, :responses => [
-    FactoryBot.create(:response, :question => FactoryBot.create(:question), :answer => FactoryBot.create(:answer, :response_class => :string), :string_value => '2')])
-  }
-
-  let(:js) {rs.as_json}
-
-  xit "should include uuid, survey_id" do
-    expect(js[:uuid]).to eq(rs.api_id)
-  end
-
-  xit "should include responses with uuid, question_id, answer_id, value" do
-    r0 = rs.responses[0]
-    expect(js[:responses][0][:uuid]).to eq(r0.api_id)
-    expect(js[:responses][0][:answer_id]).to eq(r0.answer.api_id)
-    expect(js[:responses][0][:question_id]).to eq(r0.question.api_id)
-    expect(js[:responses][0][:value]).to eq(r0.string_value)
-  end
-end

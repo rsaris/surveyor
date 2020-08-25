@@ -28,13 +28,12 @@ ActiveRecord::Migration.check_pending! if ::Rails.version >= "4.0" && defined?(A
 
 Capybara.javascript_driver = :poltergeist
 
-
 RSpec.configure do |config|
   config.include JsonSpec::Helpers
   config.include SurveyorAPIHelpers
   config.include WaitForAjax
 
-  # config.treat_symbols_as_metadata_keys_with_true_values = true
+  config.treat_symbols_as_metadata_keys_with_true_values = true
 
   # == Mock Framework
   #

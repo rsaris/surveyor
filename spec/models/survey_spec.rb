@@ -112,28 +112,6 @@ describe Survey do
     end
   end
 
-  context "serialization" do
-    let(:s1){ FactoryBot.create(:survey_section, :survey => survey, :title => "wise") }
-    let(:s2){ FactoryBot.create(:survey_section, :survey => survey, :title => "er") }
-    let(:q1){ FactoryBot.create(:question, :survey_section => s1, :text => "what is wise?") }
-    let(:q2){ FactoryBot.create(:question, :survey_section => s2, :text => "what is er?") }
-    let(:q3){ FactoryBot.create(:question, :survey_section => s2, :text => "what is mill?") }
-    before do
-      [s1, s2].each{|s| survey.sections << s }
-      s1.questions << q1
-      s2.questions << q2
-      s2.questions << q3
-    end
-
-    xit "includes title, sections, and questions" do
-      actual = survey.as_json
-      expect(actual[:title]).to eq('Simple survey')
-      expect(actual[:sections].size).to eq(2)
-      expect(actual[:sections][0][:questions_and_groups].size).to eq(1)
-      expect(actual[:sections][1][:questions_and_groups].size).to eq(2)
-    end
-  end
-
   context "with translations" do
     require 'yaml'
     let(:survey_translation){
